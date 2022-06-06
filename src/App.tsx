@@ -12,7 +12,7 @@ import "./styles/content.scss"
 import { SideBar } from "./components/SideBar"
 import { Content } from "./components/Content"
 
-interface GenreResponseProps {
+export interface GenreResponseProps {
   id: number
   name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family"
   title: string
@@ -43,14 +43,6 @@ export function App() {
       setGenres(response.data)
     })
   }, [])
-
-  useEffect(() => {
-    api
-      .get<GenreResponseProps>(`genres/${selectedGenreId}`)
-      .then((response) => {
-        setSelectedGenre(response.data)
-      })
-  }, [selectedGenreId])
 
   const handleClickButton = useCallback((id: number) => {
     setSelectedGenreId(id)

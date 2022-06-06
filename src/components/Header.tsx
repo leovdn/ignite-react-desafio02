@@ -1,10 +1,24 @@
+import { useEffect, useState } from "react"
+import { GenreResponseProps } from "../App"
+import { api } from "../services/api"
+
 interface HeaderProps {
-  selectedGenre: {
-    title: string
-  }
+  selectedGenreId: number
 }
 
-export function Header({ selectedGenre }: HeaderProps) {
+export function Header({ selectedGenreId }: HeaderProps) {
+  const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>(
+    {} as GenreResponseProps
+  )
+
+  useEffect(() => {
+    api
+      .get<GenreResponseProps>(`genres/${selectedGenreId}`)
+      .then((response) => {
+        setSelectedGenre(response.data)
+      })
+  }, [selectedGenreId])
+
   return (
     <header>
       <span className="category">

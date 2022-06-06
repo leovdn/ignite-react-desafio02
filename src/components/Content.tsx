@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import { api } from "../services/api"
 import { Header } from "./Header"
 import { MovieCard } from "./MovieCard"
@@ -20,10 +20,10 @@ interface ContentProps {
   }
 }
 
-export function Content({ selectedGenreId, selectedGenre }: ContentProps) {
+function ContentComponent({ selectedGenreId, selectedGenre }: ContentProps) {
   const [movies, setMovies] = useState<MovieProps[]>([])
 
-  useEffect(() => {
+  useMemo(() => {
     api
       .get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`)
       .then((response) => {
@@ -33,7 +33,7 @@ export function Content({ selectedGenreId, selectedGenre }: ContentProps) {
 
   return (
     <div className="container">
-      <Header selectedGenre={selectedGenre} />
+      <Header selectedGenreId={selectedGenreId} />
 
       <main>
         <div className="movies-list">
@@ -51,3 +51,7 @@ export function Content({ selectedGenreId, selectedGenre }: ContentProps) {
     </div>
   )
 }
+
+export const Content = memo(ContentComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.selectedGenreId, nextProps.selectedGenreId)
+})
