@@ -1,24 +1,38 @@
-import { Button } from "./Button";
+import { Button } from "./Button"
 
-interface GenreItemProps {
-  genre: {
-    id: number;
-    name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family";
-    title: string;
-  };
-  handleClickButton(id: number): any;
-  selectedGenreId: number;
+interface GenreProps {
+  id: number
+  name: "action" | "comedy" | "documentary" | "drama" | "horror" | "family"
+  title: string
+}
+interface SidebarProps {
+  genres: GenreProps[]
+  handleClickButton(id: number): any
+  selectedGenreId: number
 }
 
-export function SideBar(props: GenreItemProps) {
-  // Complete aqui
+export function SideBar({
+  genres,
+  handleClickButton,
+  selectedGenreId,
+}: SidebarProps) {
   return (
-    <Button
-      key={String(props.genre.id)}
-      title={props.genre.title}
-      iconName={props.genre.name}
-      onClick={() => props.handleClickButton(props.genre.id)}
-      selected={props.selectedGenreId === props.genre.id}
-    />
-  );
+    <nav className="sidebar">
+      <span>
+        Watch<p>Me</p>
+      </span>
+
+      <div className="buttons-container">
+        {genres.map((genre) => (
+          <Button
+            key={String(genre.id)}
+            title={genre.title}
+            iconName={genre.name}
+            onClick={() => handleClickButton(genre.id)}
+            selected={selectedGenreId === genre.id}
+          />
+        ))}
+      </div>
+    </nav>
+  )
 }
