@@ -1,28 +1,19 @@
-import { useEffect, useState } from "react"
-import { GenreResponseProps } from "../App"
-import { api } from "../services/api"
+import Skeleton from "react-loading-skeleton"
+import { useGenre } from "../hooks/useGenre"
+import "../styles/content.scss"
 
 interface HeaderProps {
   selectedGenreId: number
 }
 
 export function Header({ selectedGenreId }: HeaderProps) {
-  const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>(
-    {} as GenreResponseProps
-  )
-
-  useEffect(() => {
-    api
-      .get<GenreResponseProps>(`genres/${selectedGenreId}`)
-      .then((response) => {
-        setSelectedGenre(response.data)
-      })
-  }, [selectedGenreId])
+  const { data, isLoading } = useGenre(selectedGenreId)
 
   return (
     <header>
       <span className="category">
-        Categoria:<span> {selectedGenre.title}</span>
+        Categoria:{" "}
+        <span>{isLoading ? <Skeleton width={200} /> : data.title}</span>
       </span>
     </header>
   )

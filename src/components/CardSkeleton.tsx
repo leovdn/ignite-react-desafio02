@@ -10,7 +10,7 @@ export const CardSkeleton = ({ cards }: CardSkeletonProps) => {
     <>
       {cardCount.map((_, index) => (
         <div className="card-skeleton">
-          <Skeleton height="21.25rem" />
+          <Skeleton height="21.25rem" width="14.31rem" />
         </div>
       ))}
     </>

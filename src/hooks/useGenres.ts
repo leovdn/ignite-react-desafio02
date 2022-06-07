@@ -3,7 +3,6 @@ import { api } from "../services/api"
 
 export async function getGenres() {
   const { data } = await api.get("genres")
-  console.log("teste")
 
   return data
 }
