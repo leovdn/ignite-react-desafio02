@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 
-import { Button } from "./components/Button"
-import { MovieCard } from "./components/MovieCard"
-
 import { api } from "./services/api"
 
 import "./styles/global.scss"
@@ -32,17 +29,9 @@ interface MovieProps {
 export function App() {
   const [selectedGenreId, setSelectedGenreId] = useState(1)
 
-  const [genres, setGenres] = useState<GenreResponseProps[]>([])
-
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>(
     {} as GenreResponseProps
   )
-
-  useEffect(() => {
-    api.get<GenreResponseProps[]>("genres").then((response) => {
-      setGenres(response.data)
-    })
-  }, [])
 
   const handleClickButton = useCallback((id: number) => {
     setSelectedGenreId(id)
@@ -51,7 +40,6 @@ export function App() {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <SideBar
-        genres={genres}
         handleClickButton={handleClickButton}
         selectedGenreId={selectedGenreId}
       />

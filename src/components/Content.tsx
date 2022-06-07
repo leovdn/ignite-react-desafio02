@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo, useState } from "react"
+import useMovies from "../hooks/useMovies"
 import { api } from "../services/api"
 import { Header } from "./Header"
 import { MovieCard } from "./MovieCard"
@@ -23,13 +24,11 @@ interface ContentProps {
 function ContentComponent({ selectedGenreId, selectedGenre }: ContentProps) {
   const [movies, setMovies] = useState<MovieProps[]>([])
 
-  useMemo(() => {
-    api
-      .get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`)
-      .then((response) => {
-        setMovies(response.data)
-      })
-  }, [selectedGenreId])
+  const { status, data, error, isLoading } = useMovies(selectedGenreId)
+
+  if (isLoading) return "Loading..."
+
+  if (error) return "An error has occurred: " + error.message
 
   return (
     <div className="container">
@@ -37,7 +36,7 @@ function ContentComponent({ selectedGenreId, selectedGenre }: ContentProps) {
 
       <main>
         <div className="movies-list">
-          {movies.map((movie) => (
+          {data.map((movie: MovieProps) => (
             <MovieCard
               key={movie.imdbID}
               title={movie.Title}

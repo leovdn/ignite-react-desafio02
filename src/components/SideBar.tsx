@@ -1,3 +1,4 @@
+import { useGenres } from "../hooks/useGenres"
 import { Button } from "./Button"
 
 interface GenreProps {
@@ -6,16 +7,17 @@ interface GenreProps {
   title: string
 }
 interface SidebarProps {
-  genres: GenreProps[]
   handleClickButton(id: number): any
   selectedGenreId: number
 }
 
-export function SideBar({
-  genres,
-  handleClickButton,
-  selectedGenreId,
-}: SidebarProps) {
+export function SideBar({ handleClickButton, selectedGenreId }: SidebarProps) {
+  const { data, isLoading, isError } = useGenres()
+
+  if (isLoading) {
+    return <span>Loading...</span>
+  }
+
   return (
     <nav className="sidebar">
       <span>
@@ -23,7 +25,7 @@ export function SideBar({
       </span>
 
       <div className="buttons-container">
-        {genres.map((genre) => (
+        {data.map((genre: GenreProps) => (
           <Button
             key={String(genre.id)}
             title={genre.title}
