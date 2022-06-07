@@ -1,10 +1,11 @@
-import { memo, useEffect, useMemo, useState } from "react"
+import { memo, useState } from "react"
 import useMovies from "../hooks/useMovies"
-import { api } from "../services/api"
 import { Header } from "./Header"
 import { MovieCard } from "./MovieCard"
+import "react-loading-skeleton/dist/skeleton.css"
+import { CardSkeleton } from "./CardSkeleton"
 
-interface MovieProps {
+export interface MovieProps {
   imdbID: string
   Title: string
   Poster: string
@@ -22,11 +23,9 @@ interface ContentProps {
 }
 
 function ContentComponent({ selectedGenreId, selectedGenre }: ContentProps) {
-  const [movies, setMovies] = useState<MovieProps[]>([])
-
   const { status, data, error, isLoading } = useMovies(selectedGenreId)
 
-  if (isLoading) return "Loading..."
+  // if (isLoading) return "Loading..."
 
   if (error) return "An error has occurred: " + error.message
 
@@ -36,15 +35,19 @@ function ContentComponent({ selectedGenreId, selectedGenre }: ContentProps) {
 
       <main>
         <div className="movies-list">
-          {data.map((movie: MovieProps) => (
-            <MovieCard
-              key={movie.imdbID}
-              title={movie.Title}
-              poster={movie.Poster}
-              runtime={movie.Runtime}
-              rating={movie.Ratings[0].Value}
-            />
-          ))}
+          {isLoading ? (
+            <CardSkeleton cards={6} />
+          ) : (
+            data?.map((movie) => (
+              <MovieCard
+                key={movie.imdbID}
+                title={movie.Title}
+                poster={movie.Poster}
+                runtime={movie.Runtime}
+                rating={movie.Ratings[0].Value}
+              />
+            ))
+          )}
         </div>
       </main>
     </div>

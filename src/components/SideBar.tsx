@@ -14,9 +14,9 @@ interface SidebarProps {
 export function SideBar({ handleClickButton, selectedGenreId }: SidebarProps) {
   const { data, isLoading, isError } = useGenres()
 
-  if (isLoading) {
-    return <span>Loading...</span>
-  }
+  // if (isLoading) {
+  //   return <span>Loading...</span>
+  // }
 
   return (
     <nav className="sidebar">
@@ -25,7 +25,7 @@ export function SideBar({ handleClickButton, selectedGenreId }: SidebarProps) {
       </span>
 
       <div className="buttons-container">
-        {data.map((genre: GenreProps) => (
+        {data?.map((genre: GenreProps) => (
           <Button
             key={String(genre.id)}
             title={genre.title}
